@@ -1,0 +1,5 @@
+node_modules/
+pool-state.json
+pool-state.json.tmp
+.env
+*.log
