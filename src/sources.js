@@ -2,6 +2,18 @@ const cfg = require('./config');
 
 const LINE = /^(?:\w+:\/\/)?(\d{1,3}(?:\.\d{1,3}){3}):(\d{2,5})\b/;
 
+function parseList(text, seen = new Map()) {
+  for (const line of text.split(/\r?\n/)) {
+    const m = LINE.exec(line.trim());
+    if (!m) continue;
+    const port = Number(m[2]);
+    if (port < 1 || port > 65535) continue;
+    const key = `${m[1]}:${port}`;
+    if (!seen.has(key)) seen.set(key, { key, host: m[1], port });
+  }
+  return seen;
+}
+
 async function fetchSources() {
   const results = await Promise.allSettled(
     cfg.SOURCES.map(async (url) => {
@@ -17,16 +29,9 @@ async function fetchSources() {
       console.warn('[sources] failed:', r.reason.message);
       continue;
     }
-    for (const line of r.value.split(/\r?\n/)) {
-      const m = LINE.exec(line.trim());
-      if (!m) continue;
-      const port = Number(m[2]);
-      if (port < 1 || port > 65535) continue;
-      const key = `${m[1]}:${port}`;
-      if (!seen.has(key)) seen.set(key, { key, host: m[1], port });
-    }
+    parseList(r.value, seen);
   }
   return [...seen.values()];
 }
 
-module.exports = { fetchSources };
+module.exports = { parseList, fetchSources };

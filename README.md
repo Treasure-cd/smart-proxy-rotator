@@ -181,7 +181,7 @@ Everything lives in [`src/config.js`](src/config.js). `HOST`, `PORT` and `STATE_
 
 ## Project layout
 
-```
+```text
 src/
 ├── index.js       # startup, refresh / revalidate loop, persistence
 ├── server.js      # HTTP forwarding, CONNECT tunnelling, /route, admin API
@@ -189,7 +189,21 @@ src/
 ├── validator.js   # TCP / HTTP / CONNECT checks, anonymity classifier, concurrency helper
 ├── sources.js     # fetch, parse and dedupe public lists
 └── config.js      # all tunables
+
+test/
+├── helpers.js          # mock proxies, mock targets, and a ready-made test rig
+├── pool.test.js        # scoring, selection, lifecycle, persistence
+├── validator.test.js   # anonymity classifier, TCP/HTTP/CONNECT checks, concurrency helper
+├── sources.test.js     # proxy-list parsing
+├── server.test.js      # end-to-end: proxy mode, failover, CONNECT, /route, admin API
+└── route-https.test.js # /route with HTTPS targets (needs openssl; skips otherwise)
 ```
+
+```markdown
+## Testing
+
+```bash
+npm test
 
 ## Limitations and responsible use
 
@@ -205,6 +219,7 @@ Being upfront about what this is and isn't:
 
 Use this for legitimate purposes and respect the terms of service and `robots.txt` of the sites you access.
 
+```markdown
 ## Roadmap
 
 - [ ] CLI interface for global installation, terminal commands, and live proxy monitoring
@@ -214,7 +229,7 @@ Use this for legitimate purposes and respect the terms of service and `robots.tx
 - [ ] Detect proxies blocked by a specific target and route around them
 - [ ] Geo and ASN filtering
 - [ ] Configurable sources and echo endpoints via environment variables
-- [ ] Automated test suite
+- [x] Automated test suite
 
 ## Contributing
 

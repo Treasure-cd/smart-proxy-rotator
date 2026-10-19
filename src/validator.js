@@ -65,6 +65,7 @@ function connectCheck(proxy, timeout = cfg.HTTP_TIMEOUT) {
     const done = (ok) => { s.destroy(); resolve(ok); };
     s.setTimeout(timeout, () => done(false));
     s.once('error', () => done(false));
+    s.once('close', () => done(false)); // proxy hung up without answering
     s.once('connect', () =>
       s.write(`CONNECT ${cfg.CONNECT_TARGET} HTTP/1.1\r\nHost: ${cfg.CONNECT_TARGET}\r\n\r\n`));
     s.on('data', (d) => {
@@ -93,4 +94,4 @@ async function mapLimit(items, limit, fn) {
   await Promise.all(workers);
 }
 
-module.exports = { tcpCheck, httpCheck, connectCheck, validate, mapLimit };
+module.exports = { classify, tcpCheck, httpCheck, connectCheck, validate, mapLimit };
