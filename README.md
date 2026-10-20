@@ -10,6 +10,9 @@
 Free proxy lists are mostly dead, slow, or leaky. This tool does the tedious part for you: it fetches thousands of candidates, throws out the junk in stages, keeps a scored pool of the survivors, and exposes one stable endpoint (`localhost:8080`). Point your scraper at that port and every request goes out through a different, currently working, anonymous proxy. 
 If one dies mid-request, the rotator quietly retries on another, so your scraper never sees the failure.
 
+![Demo: five requests, five different exit IPs](public/scsh-1.png)
+![Demo: five requests, five different exit IPs](public/scsh-2.png)
+
 ## Features
 
 - **One local port, two ways to use it.** You can run it as a standard HTTP/HTTPS proxy (`curl -x`), or call `GET /route?url=<target>` from anywhere.
